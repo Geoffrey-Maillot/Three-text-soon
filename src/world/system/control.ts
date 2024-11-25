@@ -16,7 +16,7 @@ const createControls = ({
     controls.update();
   };
 
-  loop.add({ tick });
+  loop.add(tick);
 
   return controls;
 };

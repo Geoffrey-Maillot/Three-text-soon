@@ -15,7 +15,7 @@ const paramsDefault: Omit<TextGeometryParameters, 'font'> = {
   bevelSegments: 5,
 };
 
-const createTextMaterial = (
+const createTextGeometry = (
   font: Font,
   text: string,
   params?: Omit<TextGeometryParameters, 'font'>
@@ -29,4 +29,4 @@ const createTextMaterial = (
   return geometry;
 };
 
-export { createTextMaterial };
+export { createTextGeometry };

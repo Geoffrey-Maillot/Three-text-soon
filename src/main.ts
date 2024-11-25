@@ -2,8 +2,12 @@ import { World } from './world/World';
 
 const container = document.getElementById('canvas-container') as HTMLDivElement;
 
-console.log(container);
-
 const world = new World(container);
 
-world.start();
+try {
+  await world.init();
+  world.start();
+  world.startAnimation();
+} catch (error) {
+  console.error(error);
+}

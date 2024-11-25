@@ -1,9 +1,7 @@
-import { Camera, Clock, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { Camera, Clock, Scene, WebGLRenderer } from 'three';
 import { ClassNotInitializedError } from '../../class/ClassNotInitializedError';
 
-interface Updatable {
-  tick(delta: number, elapsedTime: number): void;
-}
+type Updatable = (delta: number, elapsedTime: number) => void;
 
 class Loop {
   private camera: Camera;
@@ -12,7 +10,7 @@ class Loop {
   private clock: Clock;
   private previousTime: number = 0;
   private isRunning: boolean = false;
-  private updatables: Updatable[] = [];
+  private updatables: Set<Updatable> = new Set(); // Utilisation d'un Set pour éviter les doublons
 
   constructor(dependencies: {
     camera: Camera;
@@ -25,32 +23,21 @@ class Loop {
     this.clock = new Clock();
   }
 
-  // Ajoute un ou plusieurs objets à la boucle d'animation
-  add = (object: Updatable | Updatable[]): void => {
-    if (Array.isArray(object)) {
-      object.forEach((obj) => this.addUpdatable(obj));
+  // Ajoute une ou plusieurs fonctions d'update
+  add = (updatable: Updatable | Updatable[]): void => {
+    if (Array.isArray(updatable)) {
+      updatable.forEach((fn) => this.updatables.add(fn));
     } else {
-      this.addUpdatable(object);
+      this.updatables.add(updatable);
     }
   };
 
-  // Supprime un ou plusieurs objets de la boucle d'animation
-  remove = (object: Updatable | Updatable[]): void => {
-    if (Array.isArray(object)) {
-      object.forEach((obj) => this.removeUpdatable(obj));
+  // Supprime une ou plusieurs fonctions d'update
+  remove = (updatable: Updatable | Updatable[]): void => {
+    if (Array.isArray(updatable)) {
+      updatable.forEach((fn) => this.updatables.delete(fn));
     } else {
-      this.removeUpdatable(object);
-    }
-  };
-
-  private addUpdatable = (object: Updatable): void => {
-    this.updatables.push(object);
-  };
-
-  private removeUpdatable = (object: Updatable): void => {
-    const index = this.updatables.indexOf(object);
-    if (index !== -1) {
-      this.updatables.splice(index, 1);
+      this.updatables.delete(updatable);
     }
   };
 
@@ -64,9 +51,8 @@ class Loop {
       const delta = elapsedTime - this.previousTime;
       this.previousTime = elapsedTime;
 
-      for (const object of this.updatables) {
-        object.tick(delta, elapsedTime);
-      }
+      // Exécute toutes les fonctions d'update
+      this.updatables.forEach((update) => update(delta, elapsedTime));
 
       this.renderer.render(this.scene, this.camera);
     });
@@ -83,7 +69,6 @@ class Loop {
 // Singleton
 let loopInstance: Loop;
 
-// Create singleton loop with dependencies
 const createLoop = (dependencies: {
   camera: Camera;
   scene: Scene;
@@ -95,7 +80,6 @@ const createLoop = (dependencies: {
   return loopInstance;
 };
 
-// Export le proxy qui vérifie l'initialisation
 const loop = new Proxy({} as Loop, {
   get: (target, prop) => {
     if (!loopInstance) {
