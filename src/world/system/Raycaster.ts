@@ -30,7 +30,7 @@ interface RaycastObject {
 class Raycast {
   private objectsMap: Map<Object3D, RaycastObject> = new Map();
   private readonly raycaster: ThreeRaycaster;
-  private readonly pointer: Vector2;
+  public readonly pointer: Vector2;
   private hoveredObject: Object3D | null = null;
   private boundingSphereHelper?: Mesh;
   private readonly throttledMouseMove: (e: MouseEvent) => void;

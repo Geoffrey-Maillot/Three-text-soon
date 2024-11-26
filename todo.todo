@@ -1,3 +1,7 @@
 ☐ Background
-☐ camera animation
-☐ effet suivi de la camera souris
+✔ camera animation @done(24-11-26 23:20)
+✔ effet suivi de la camera souris @done(24-11-26 23:20)
+☐ Ajout tweak text
+☐ Camera animation
+  ☐ tweak bouton désactiver suivi souris > disable control
+  ☐ Tweak bouton active control camera > disable suivi souris

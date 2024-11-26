@@ -1,7 +1,6 @@
 import { Group, Mesh } from 'three';
 import { createTextGeometry } from './createTextGeometry';
 import { createMatcapMaterial } from '../createMatCapMaterial';
-import { scene } from '../scene';
 import { load3dText } from '../../../utils/loaderText';
 import gsap from 'gsap';
 
@@ -11,9 +10,11 @@ const soonText = `(soon...)`;
 class Text extends Group {
   private mainText: Mesh | null = null;
   private soonText: Mesh | null = null;
+  private timeline: GSAPTimeline;
 
   constructor() {
     super();
+    this.timeline = gsap.timeline();
   }
 
   public async init() {
@@ -54,9 +55,8 @@ class Text extends Group {
 
   animateSoonText() {
     if (!this.soonText) return;
-    const timeline = gsap.timeline();
 
-    timeline
+    return this.timeline
       .to(this.soonText?.material, {
         opacity: 1,
         delay: 5,

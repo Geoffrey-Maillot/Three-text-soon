@@ -4,53 +4,59 @@ import { createDonutGeometry } from './createDonutGeometry';
 import { loop, Updatable } from '../../system/Loop';
 import { pane } from '../../system/Tweakpane';
 
+// Initil params
 const params = {
-  numberOfDonuts: 400,
-  donutLimitPosition: 0.02,
-  donutSpeedRotation: 0.5,
+  numberOfDonuts: 600,
+  donutLimitPosition: 0.08,
+  donutSpeedRotation: 0.65,
 };
 
+// Tweaks
 const folder = pane.addFolder({ title: 'Donuts' });
 
-// Calcul de l'offset pour chaque donut
+const addTweaks = (onFinishChange: () => void) => {
+  folder
+    .addBinding(params, 'numberOfDonuts', { min: 1, max: 1000 })
+    .on('change', (evt) => {
+      if (evt.last) {
+        onFinishChange();
+      }
+    });
+
+  folder
+    .addBinding(params, 'donutLimitPosition', { min: 0, max: 0.1 })
+    .on('change', (evt) => {
+      if (evt.last) {
+        onFinishChange();
+      }
+    });
+  folder
+    .addBinding(params, 'donutSpeedRotation', { min: 0, max: 1 })
+    .on('change', (evt) => {
+      if (evt.last) {
+        onFinishChange();
+      }
+    });
+};
+
+// Calcul offset for each donut
 const calculOffset = (index: number) => {
   return (index * Math.PI * 2) / params.numberOfDonuts;
 };
 
+/**
+ * Donuts
+ */
 class Donuts extends Group {
   private donuts: Mesh[] = [];
   private ticks: Updatable[] = [];
   constructor() {
     super();
 
-    /**
-     * Tweaks
-     */
-    folder
-      .addBinding(params, 'numberOfDonuts', { min: 1, max: 1000 })
-      .on('change', (evt) => {
-        if (evt.last) {
-          this.removeDonuts();
-          this.init();
-        }
-      });
-
-    folder
-      .addBinding(params, 'donutLimitPosition', { min: 0, max: 0.1 })
-      .on('change', (evt) => {
-        if (evt.last) {
-          this.removeDonuts();
-          this.init();
-        }
-      });
-    folder
-      .addBinding(params, 'donutSpeedRotation', { min: 0, max: 1 })
-      .on('change', (evt) => {
-        if (evt.last) {
-          this.removeDonuts();
-          this.init();
-        }
-      });
+    addTweaks(() => {
+      this.removeDonuts();
+      this.init();
+    });
   }
 
   async init() {
@@ -60,7 +66,7 @@ class Donuts extends Group {
     for (let i = 0; i < params.numberOfDonuts; i++) {
       const donut = new Mesh(donutGeometry, donutMaterial);
 
-      const ramdomPosition = () => (Math.random() - 0.5) * 20;
+      const ramdomPosition = () => (Math.random() - 0.5) * 30;
 
       const scale = Math.random() * 0.8 + 0.2; // Entre 0.2 et 1
 

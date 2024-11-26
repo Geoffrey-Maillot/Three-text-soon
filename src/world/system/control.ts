@@ -11,6 +11,7 @@ const createControls = ({
 }) => {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.enabled = false;
 
   const tick = () => {
     controls.update();
