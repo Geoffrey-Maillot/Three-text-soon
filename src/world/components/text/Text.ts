@@ -2,7 +2,7 @@ import { Group, Mesh } from 'three';
 import { createTextGeometry } from './createTextGeometry';
 import { createMatcapMaterial } from '../createMatCapMaterial';
 import { load3dText } from '../../../utils/loaderText';
-import gsap from 'gsap';
+import { animationManager } from '../../../class/AnimationManager';
 
 const mainText = `Hi, my name is\nMaillot Geoffrey\nI'm a Three.js developer !`;
 const soonText = `(soon...)`;
@@ -10,11 +10,9 @@ const soonText = `(soon...)`;
 class Text extends Group {
   private mainText: Mesh | null = null;
   private soonText: Mesh | null = null;
-  private timeline: GSAPTimeline;
 
   constructor() {
     super();
-    this.timeline = gsap.timeline();
   }
 
   public async init() {
@@ -51,12 +49,15 @@ class Text extends Group {
     this.soonText.position.set(xPositionSoonText, 0, 0);
 
     this.add(this.mainText, this.soonText);
+
+    this.createAnimateSoonText();
   }
 
-  animateSoonText() {
+  createAnimateSoonText() {
     if (!this.soonText) return;
 
-    return this.timeline
+    const timeline = animationManager.createAnimation('animateSoonText');
+    timeline
       .to(this.soonText?.material, {
         opacity: 1,
         delay: 5,
@@ -68,6 +69,7 @@ class Text extends Group {
         duration: 2,
         ease: 'bounce.out',
       });
+    timeline.play();
   }
 }
 

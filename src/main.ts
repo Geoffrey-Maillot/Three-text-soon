@@ -7,7 +7,6 @@ const world = new World(container);
 try {
   await world.init();
   world.start();
-  world.startAnimation();
 } catch (error) {
   console.error(error);
 }

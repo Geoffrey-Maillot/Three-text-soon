@@ -1,7 +1,7 @@
 import { Camera, Clock, Scene, WebGLRenderer } from 'three';
 import { ClassNotInitializedError } from '../../class/ClassNotInitializedError';
 
-type Updatable = (delta: number, elapsedTime: number) => void;
+type Updatable = (delta: number, elapsedTime: number) => unknown;
 
 class Loop {
   private camera: Camera;
