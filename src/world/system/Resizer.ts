@@ -97,4 +97,4 @@ const resizer = new Proxy({} as Resizer, {
 });
 
 export { resizer, createResizer };
-export type { ResizerDependencies };
+export type { ResizerDependencies, Resizer };

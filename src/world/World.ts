@@ -1,4 +1,6 @@
-import { WebGLRenderer, PerspectiveCamera } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Mesh } from 'three';
+
+import type { Resizer } from './system/Resizer';
 
 import { createRenderer } from './system/renderer';
 import { scene } from './components/scene';
@@ -9,13 +11,18 @@ import { Donuts } from './components/donuts/Donuts';
 import { createResizer } from './system/Resizer';
 import { createRaycast } from './system/Raycaster';
 import { createControls } from './system/control';
+import { ShootingStar } from './components/shootingStar/ShootingStar';
+import { createDonutGeometry } from './components/donuts/createDonutGeometry';
+import { createMatcapMaterial } from './components/createMatCapMaterial';
 
 class World {
   private renderer: WebGLRenderer;
   private camera: PerspectiveCamera;
+  private resizer: Resizer;
 
   private Text: Text;
   private Donuts: Donuts;
+  private ShootingStar: ShootingStar;
   constructor(container: HTMLDivElement) {
     /**
      * Init system
@@ -28,7 +35,7 @@ class World {
     this.camera = camera;
 
     createLoop({ camera: this.camera, scene, renderer: this.renderer });
-    createResizer({
+    this.resizer = createResizer({
       camera: this.camera as PerspectiveCamera,
       renderer: this.renderer,
       container,
@@ -44,16 +51,19 @@ class World {
      */
     this.Text = new Text();
     this.Donuts = new Donuts();
+    this.ShootingStar = new ShootingStar();
 
     /**
      * Add component to scene
      */
-    scene.add(this.Text, this.Donuts);
+    scene.add(this.Text, this.Donuts, this.ShootingStar);
   }
 
   async init() {
+    this.resizer.setSize();
     await this.Text.init();
     await this.Donuts.init();
+    await this.ShootingStar.init();
   }
 
   start() {

@@ -6,7 +6,7 @@ import {
 import { loadTexture } from '../../utils/textureLoader';
 
 const createMatcapMaterial = async (params?: MeshMatcapMaterialParameters) => {
-  const texture = await loadTexture('/src/assets/textures/matcaps/8.png');
+  const texture = await loadTexture('/src/assets/textures/matcaps/10.png');
   texture.colorSpace = SRGBColorSpace;
 
   const material = new MeshMatcapMaterial({ matcap: texture, ...params });
