@@ -1,4 +1,4 @@
-import { WebGLRenderer, PerspectiveCamera, Mesh } from 'three';
+import { WebGLRenderer, PerspectiveCamera } from 'three';
 
 import type { Resizer } from './system/Resizer';
 
@@ -12,8 +12,6 @@ import { createResizer } from './system/Resizer';
 import { createRaycast } from './system/Raycaster';
 import { createControls } from './system/control';
 import { ShootingStar } from './components/shootingStar/ShootingStar';
-import { createDonutGeometry } from './components/donuts/createDonutGeometry';
-import { createMatcapMaterial } from './components/createMatCapMaterial';
 
 class World {
   private renderer: WebGLRenderer;

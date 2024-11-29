@@ -7,8 +7,9 @@ import { pane } from '../../system/Tweakpane';
 // Initil params
 const params = {
   numberOfDonuts: 600,
-  donutLimitPosition: 0.08,
-  donutSpeedRotation: 0.65,
+  donutLimitPosition: 0.125,
+  donutAmplitude: 0.5,
+  donutFrequency: 0.6,
 };
 
 // Tweaks
@@ -22,16 +23,21 @@ const addTweaks = (onFinishChange: () => void) => {
         onFinishChange();
       }
     });
+  folder.addBinding(params, 'donutLimitPosition', {
+    min: 0,
+    max: 1,
+    step: 0.001,
+  });
 
   folder
-    .addBinding(params, 'donutLimitPosition', { min: 0, max: 0.1 })
+    .addBinding(params, 'donutAmplitude', { min: 0, max: 1, step: 0.001 })
     .on('change', (evt) => {
       if (evt.last) {
         onFinishChange();
       }
     });
   folder
-    .addBinding(params, 'donutSpeedRotation', { min: 0, max: 1 })
+    .addBinding(params, 'donutFrequency', { min: 0, max: 1, step: 0.001 })
     .on('change', (evt) => {
       if (evt.last) {
         onFinishChange();
@@ -68,44 +74,37 @@ class Donuts extends Group {
 
       const ramdomPosition = () => (Math.random() - 0.5) * 30;
 
+      const positionX = ramdomPosition();
+      const positionY = ramdomPosition();
+      const positionZ = ramdomPosition();
+
+      donut.position.set(positionX, positionY, positionZ);
+
       const scale = Math.random() * 0.8 + 0.2; // Entre 0.2 et 1
-
-      donut.position.set(ramdomPosition(), ramdomPosition(), ramdomPosition());
-
       donut.scale.set(scale, scale, scale);
-
-      const randomRotation = () => Math.random() * Math.PI * 0.5;
-
-      donut.rotation.set(randomRotation(), randomRotation(), randomRotation());
 
       const offset = calculOffset(i);
 
       const tick = (deltaTime: number, elapsedTime: number) => {
-        donut.position.x +=
-          Math.sin(elapsedTime + offset) *
-          deltaTime *
-          params.donutLimitPosition;
-        donut.position.y +=
-          Math.cos(elapsedTime + offset) *
-          deltaTime *
-          params.donutLimitPosition;
-        donut.position.z +=
-          Math.sin(elapsedTime + offset) *
-          deltaTime *
-          params.donutLimitPosition;
+        donut.position.x =
+          positionX +
+          Math.sin(elapsedTime + offset) * params.donutLimitPosition;
+        donut.position.y =
+          positionY +
+          Math.cos(elapsedTime + offset) * params.donutLimitPosition;
+        donut.position.z =
+          positionZ +
+          Math.sin(elapsedTime + offset) * params.donutLimitPosition;
 
-        donut.rotation.x +=
-          Math.sin(elapsedTime + offset) *
-          deltaTime *
-          params.donutSpeedRotation;
-        donut.rotation.y +=
-          Math.cos(elapsedTime + offset) *
-          deltaTime *
-          params.donutSpeedRotation;
-        donut.rotation.z +=
-          Math.sin(elapsedTime + offset) *
-          deltaTime *
-          params.donutSpeedRotation;
+        donut.rotation.x =
+          Math.sin(elapsedTime + offset * params.donutFrequency) *
+          params.donutAmplitude;
+        donut.rotation.y =
+          Math.cos(elapsedTime + offset * params.donutFrequency) *
+          params.donutAmplitude;
+        donut.rotation.z =
+          Math.sin(elapsedTime + offset * params.donutFrequency) *
+          params.donutAmplitude;
       };
       this.donuts.push(donut);
       this.ticks.push(tick);

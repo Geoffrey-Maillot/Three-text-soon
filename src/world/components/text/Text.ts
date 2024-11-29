@@ -3,9 +3,12 @@ import { createTextGeometry } from './createTextGeometry';
 import { createMatcapMaterial } from '../createMatCapMaterial';
 import { load3dText } from '../../../utils/loaderText';
 import { animationManager } from '../../../class/AnimationManager';
+import { loop, Updatable } from '../../system/Loop';
 
 const mainText = `Hi, my name is\nMaillot Geoffrey\nI'm a Three.js developer !`;
 const soonText = `(soon...)`;
+const amplitude = 0.3; // Amplitude du mouvement
+const frequency = 0.5; // Fréquence du mouvement (vitesse)
 
 class Text extends Group {
   private mainText: Mesh | null = null;
@@ -22,7 +25,7 @@ class Text extends Group {
       opacity: 0,
     });
     const font = await load3dText(
-      '/src/assets/fonts/helvetiker_regular.typeface.json'
+      '/src/assets/fonts/DynaPuff SemiCondensed Medium_Regular.json'
     );
     const mainTextGeometry = createTextGeometry(font, mainText);
     this.mainText = new Mesh(mainTextGeometry, mainTextMaterial);
@@ -51,9 +54,17 @@ class Text extends Group {
     this.add(this.mainText, this.soonText);
 
     this.createAnimateSoonText();
+    loop.add(this.animeText);
   }
 
-  createAnimateSoonText() {
+  private animeText: Updatable = (_: number, elapsedTime: number) => {
+    this.rotation.x = Math.sin(elapsedTime * frequency) * amplitude;
+    this.rotation.y = Math.cos(elapsedTime * frequency) * amplitude;
+    this.rotation.z =
+      Math.sin(elapsedTime * frequency * 0.5) * (amplitude * 0.5);
+  };
+
+  private createAnimateSoonText() {
     if (!this.soonText) return;
 
     const timeline = animationManager.createAnimation('animateSoonText');
@@ -65,7 +76,7 @@ class Text extends Group {
         ease: 'none',
       })
       .to(this.soonText.position, {
-        y: -0.7,
+        y: -0.8,
         duration: 2,
         ease: 'bounce.out',
       });
