@@ -1,5 +1,5 @@
 import { Camera, Clock, Scene, WebGLRenderer } from 'three';
-import { ClassNotInitializedError } from '../../class/ClassNotInitializedError';
+import { ClassNotInitializedError } from '../../../src/class/ClassNotInitializedError';
 
 type Updatable = (delta: number, elapsedTime: number) => unknown;
 

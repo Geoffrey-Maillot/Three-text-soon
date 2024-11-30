@@ -1,8 +1,8 @@
 import { Group, Mesh } from 'three';
 import { createTextGeometry } from './createTextGeometry';
 import { createMatcapMaterial } from '../createMatCapMaterial';
-import { load3dText } from '../../../utils/loaderText';
-import { animationManager } from '../../../class/AnimationManager';
+import { load3dText } from '../../../../src/utils/loaderText';
+import { animationManager } from '../../../../src/class/AnimationManager';
 import { loop, Updatable } from '../../system/Loop';
 
 const mainText = `Hi, my name is\nMaillot Geoffrey\nI'm a Three.js developer !`;

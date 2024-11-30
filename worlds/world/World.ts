@@ -3,7 +3,7 @@ import { WebGLRenderer, PerspectiveCamera } from 'three';
 import type { Resizer } from './system/Resizer';
 
 import { createRenderer } from './system/renderer';
-import { scene } from './components/scene';
+import { scene, transitionBackgroundColor } from './components/scene';
 import { createCamera } from './components/camera';
 import { createLoop, loop } from './system/Loop';
 import { Text } from './components/text/Text';
@@ -21,6 +21,9 @@ class World {
   private Text: Text;
   private Donuts: Donuts;
   private ShootingStar: ShootingStar;
+
+  public transitionBackgroundColor: (color: string, duration: number) => void;
+
   constructor(container: HTMLDivElement) {
     /**
      * Init system
@@ -55,6 +58,8 @@ class World {
      * Add component to scene
      */
     scene.add(this.Text, this.Donuts, this.ShootingStar);
+
+    this.transitionBackgroundColor = transitionBackgroundColor;
   }
 
   async init() {

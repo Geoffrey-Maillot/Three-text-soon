@@ -20,5 +20,13 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "worlds/world/World.ts",
+    "worlds/world/components/donuts",
+    "worlds/world/components/shootingStar",
+    "worlds/world/components/text",
+    "worlds/components/camera.ts",
+    "worlds/world/components/scene.ts"
+  ]
 }

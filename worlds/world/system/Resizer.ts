@@ -1,5 +1,5 @@
 import { PerspectiveCamera, WebGLRenderer } from 'three';
-import { ClassNotInitializedError } from '../../class/ClassNotInitializedError';
+import { ClassNotInitializedError } from '../../../src/class/ClassNotInitializedError';
 
 interface ResizerDependencies {
   container: HTMLDivElement;

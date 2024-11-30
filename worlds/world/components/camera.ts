@@ -1,6 +1,6 @@
 import { PerspectiveCamera, Vector3 } from 'three';
 import { pane } from '../system/Tweakpane';
-import { animationManager } from '../../class/AnimationManager';
+import { animationManager } from '../../../src/class/AnimationManager';
 import { raycast } from '../system/Raycaster';
 import { loop } from '../system/Loop';
 

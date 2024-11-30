@@ -3,7 +3,7 @@ import {
   MeshMatcapMaterialParameters,
   SRGBColorSpace,
 } from 'three';
-import { loadTexture } from '../../utils/textureLoader';
+import { loadTexture } from '../../../src/utils/textureLoader';
 
 const createMatcapMaterial = async (params?: MeshMatcapMaterialParameters) => {
   const texture = await loadTexture('/src/assets/textures/matcaps/10.png');

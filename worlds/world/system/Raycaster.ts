@@ -9,7 +9,7 @@ import {
   Raycaster as ThreeRaycaster,
   Vector2,
 } from 'three';
-import { ClassNotInitializedError } from '../../class/ClassNotInitializedError';
+import { ClassNotInitializedError } from '../../../src/class/ClassNotInitializedError';
 
 interface RaycastOptions {
   type: 'hover' | 'click' | 'both';
