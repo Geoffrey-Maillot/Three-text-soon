@@ -65,7 +65,8 @@
 /*-------------------
   Settings Container
 --------------------*/
-#settings-container {
+
+.settings {
   user-select: none;
   position: absolute;
   bottom: rem(16);
@@ -74,8 +75,9 @@
   align-items: center;
   gap: rem(4);
   z-index: 100;
+  display: none;
 
-  div {
+  & div {
     width: rem(20);
     height: rem(20);
     background-color: $bleuMarine;
@@ -83,27 +85,27 @@
     transition: bborder-color 0.3s linear;
     border-radius: rem(50);
 
+    &.setting-bleuMarine {
+      background-color: $bleuMarine;
+    }
+    &.setting-grisAnthracite {
+      background-color: $grisAnthracite;
+    }
+    &.setting-bleuNuit {
+      background-color: $bleuNuit;
+    }
+    &.setting-noir {
+      background-color: $noir;
+    }
+    &.setting-bleuFonce {
+      background-color: $bleuFonce;
+    }
+
     &.is-active {
       border-width: rem(2);
     }
     &:hover {
       cursor: pointer;
-    }
-
-    &#setting-color-bleuMarine {
-      background-color: $bleuMarine;
-    }
-    &#setting-color-grisAnthracite {
-      background-color: $grisAnthracite;
-    }
-    &#setting-color-bleuNuit {
-      background-color: $bleuNuit;
-    }
-    &#setting-color-noir {
-      background-color: $noir;
-    }
-    &#setting-color-bleuFonce {
-      background-color: $bleuFonce;
     }
   }
 }

@@ -1,13 +1,15 @@
 import { World } from '../worlds/world/World';
+import { UI } from '../worlds/UI/UI';
 import gsap from 'gsap';
 
 const container = document.getElementById('canvas-container') as HTMLDivElement;
 const waitingContainer = document.getElementById(
   'waiting-container'
 ) as HTMLDivElement;
+const settingsContainer = document.getElementById('settings') as HTMLDivElement;
 
 const world = new World(container);
-//let ui: UI;
+let ui = new UI(world);
 
 try {
   await world.init();
@@ -32,6 +34,7 @@ try {
     },
   });
   container.style.opacity = '1';
+  settingsContainer.style.display = 'flex';
 } catch (error) {
   console.error(error);
 }

@@ -22,7 +22,7 @@ class World {
   private Donuts: Donuts;
   private ShootingStar: ShootingStar;
 
-  public transitionBackgroundColor: (color: string, duration: number) => void;
+  public transitionBackgroundColor: typeof transitionBackgroundColor;
 
   constructor(container: HTMLDivElement) {
     /**
