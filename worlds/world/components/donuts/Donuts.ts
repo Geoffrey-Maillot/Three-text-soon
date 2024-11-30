@@ -85,7 +85,7 @@ class Donuts extends Group {
 
       const offset = calculOffset(i);
 
-      const tick = (deltaTime: number, elapsedTime: number) => {
+      const tick = (_: number, elapsedTime: number) => {
         donut.position.x =
           positionX +
           Math.sin(elapsedTime + offset) * params.donutLimitPosition;

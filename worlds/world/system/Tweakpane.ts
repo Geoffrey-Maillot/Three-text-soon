@@ -5,15 +5,6 @@ import { FolderApi, Pane as originalPane } from 'tweakpane';
  * @class Debug
  */
 class Pane extends originalPane {
-  /** Main Tweakpane instance */
-
-  /** Map of folders in the debug pane */
-  private folders: Map<string, FolderApi> = new Map();
-
-  /**
-   * Creates a new Debug instance
-   * Initializes Tweakpane and sets visibility based on URL hash
-   */
   constructor() {
     super({ title: 'Debug' });
     this.hidden = window.location.hash !== '#debug';

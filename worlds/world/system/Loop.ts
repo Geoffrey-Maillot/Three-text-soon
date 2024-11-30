@@ -81,7 +81,7 @@ const createLoop = (dependencies: {
 };
 
 const loop = new Proxy({} as Loop, {
-  get: (target, prop) => {
+  get: (_, prop) => {
     if (!loopInstance) {
       throw new ClassNotInitializedError('Loop');
     }

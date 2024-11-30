@@ -3,7 +3,6 @@ import {
   Box3Helper,
   Camera,
   Intersection,
-  Mesh,
   Object3D,
   Scene,
   Raycaster as ThreeRaycaster,
@@ -32,7 +31,6 @@ class Raycast {
   private readonly raycaster: ThreeRaycaster;
   public readonly pointer: Vector2;
   private hoveredObject: Object3D | null = null;
-  private boundingSphereHelper?: Mesh;
   private readonly throttledMouseMove: (e: MouseEvent) => void;
 
   constructor(private _camera: Camera) {
@@ -234,7 +232,7 @@ class Raycast {
   }
 
   enableDebug(scene: Scene) {
-    this.objectsMap.forEach((raycastObj, object) => {
+    this.objectsMap.forEach((raycastObj) => {
       if (raycastObj.boundingBox) {
         const helper = new Box3Helper(raycastObj.boundingBox);
         scene.add(helper);
@@ -262,7 +260,7 @@ const createRaycast = (dependencies: { camera: Camera }): Raycast => {
 
 // Export le proxy qui vérifie l'initialisation
 const raycast = new Proxy({} as Raycast, {
-  get: (target, prop) => {
+  get: (_, prop) => {
     if (!raycastInstance) {
       throw new ClassNotInitializedError('Raycast');
     }

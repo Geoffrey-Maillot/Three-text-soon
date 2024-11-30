@@ -88,7 +88,7 @@ const createResizer = (dependencies: ResizerDependencies) => {
 
 // Export le proxy qui vérifie l'initialisation
 const resizer = new Proxy({} as Resizer, {
-  get: (target, prop) => {
+  get: (_, prop) => {
     if (!resizerInstance) {
       throw new ClassNotInitializedError('Resizer');
     }
