@@ -28,7 +28,9 @@ class UI {
     // Add click listeners to color buttons
     this.buttonsChangeColorsElements.forEach((button) => {
       button.addEventListener('click', (evt) => {
-        const { color } = (evt.target as HTMLDivElement).dataset;
+        const target = evt.target as HTMLDivElement;
+        const { color } = target.dataset;
+        this.toggleButton(target);
         this.changeColor(color);
       });
     });
@@ -37,6 +39,16 @@ class UI {
     this.canvasContainer.addEventListener('dblclick', () => {
       this.fullScreen(this.canvasContainer);
     });
+  }
+  /**
+   * Toggles the active state of a button
+   * @param button - HTMLDivElement to toggle
+   */
+  private toggleButton(button: HTMLDivElement) {
+    this.buttonsChangeColorsElements.forEach((btn) => {
+      btn.classList.remove('is-active');
+    });
+    button.classList.toggle('is-active');
   }
 
   /**
