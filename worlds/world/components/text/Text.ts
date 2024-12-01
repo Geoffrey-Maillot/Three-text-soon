@@ -4,6 +4,8 @@ import { createMatcapMaterial } from '../createMatCapMaterial';
 import { load3dText } from '../../../../src/utils/loaderText';
 import { animationManager } from '../../../../src/class/AnimationManager';
 import { loop, Updatable } from '../../system/Loop';
+import dynapuff from '../../../../src/assets/fonts/DynaPuff SemiCondensed Medium_Regular.json';
+import { FontData } from 'three/examples/jsm/loaders/FontLoader.js';
 
 const mainText = `Hi, my name is\nMaillot Geoffrey\nI'm a Three.js developer !`;
 const soonText = `(soon...)`;
@@ -24,9 +26,7 @@ class Text extends Group {
       transparent: true,
       opacity: 0,
     });
-    const font = await load3dText(
-      '/src/assets/fonts/DynaPuff SemiCondensed Medium_Regular.json'
-    );
+    const font = await load3dText(dynapuff as unknown as FontData);
     const mainTextGeometry = createTextGeometry(font, mainText);
     this.mainText = new Mesh(mainTextGeometry, mainTextMaterial);
     this.mainText.geometry.center();
