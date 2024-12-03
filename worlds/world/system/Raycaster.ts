@@ -10,9 +10,16 @@ import {
 } from 'three';
 import { ClassNotInitializedError } from '../../../src/class/ClassNotInitializedError';
 
+/**
+ * Interface for raycasting options
+ * @interface RaycastOptions
+ */
 interface RaycastOptions {
+  /** Type of event to listen for: 'hover', 'click' or 'both' */
   type: 'hover' | 'click' | 'both';
+  /** Priority level for handling intersections (higher numbers take precedence) */
   priority: number;
+  /** Whether the raycast handler is currently enabled */
   enabled: boolean;
 }
 
@@ -26,6 +33,10 @@ interface RaycastObject {
   boundingBox?: Box3;
 }
 
+/**
+ * Handles raycasting operations for 3D objects in a scene
+ * @class Raycast
+ */
 class Raycast {
   private objectsMap: Map<Object3D, RaycastObject> = new Map();
   private readonly raycaster: ThreeRaycaster;
@@ -33,6 +44,10 @@ class Raycast {
   private hoveredObject: Object3D | null = null;
   private readonly throttledMouseMove: (e: MouseEvent) => void;
 
+  /**
+   * Creates a new Raycast instance
+   * @param {Camera} _camera - Three.js camera used for raycasting
+   */
   constructor(private _camera: Camera) {
     this.raycaster = new ThreeRaycaster();
     this.pointer = new Vector2();
@@ -61,6 +76,12 @@ class Raycast {
     };
   }
 
+  /**
+   * Adds one or multiple objects to be tracked by the raycaster
+   * @param {Object3D | Object3D[]} object - Three.js object(s) to track
+   * @param {Function} handler - Callback function triggered on intersection
+   * @param {Partial<RaycastOptions>} options - Configuration options
+   */
   addObject(
     object: Object3D | Object3D[],
     handler: (intersection: Intersection | null) => void,
@@ -98,6 +119,10 @@ class Raycast {
     }
   }
 
+  /**
+   * Removes one or multiple objects from being tracked by the raycaster
+   * @param {Object3D | Object3D[]} object - Three.js object(s) to remove
+   */
   removeObject(object: Object3D | Object3D[]) {
     if (Array.isArray(object)) {
       object.forEach((obj) => {
@@ -225,12 +250,20 @@ class Raycast {
     return intersections;
   }
 
+  /**
+   * Updates the bounding boxes for all tracked objects
+   * Should be called after object transformations
+   */
   updateBoundingBoxes() {
     for (const [object, raycastObj] of this.objectsMap) {
       raycastObj.boundingBox?.setFromObject(object);
     }
   }
 
+  /**
+   * Enables visual debugging of bounding boxes
+   * @param {Scene} scene - Three.js scene to add debug helpers to
+   */
   enableDebug(scene: Scene) {
     this.objectsMap.forEach((raycastObj) => {
       if (raycastObj.boundingBox) {
@@ -240,6 +273,9 @@ class Raycast {
     });
   }
 
+  /**
+   * Cleans up event listeners and internal state
+   */
   dispose() {
     window.removeEventListener('mousemove', this.throttledMouseMove);
     window.removeEventListener('click', this.onClick.bind(this));
@@ -251,6 +287,12 @@ class Raycast {
 // Singleton
 let raycastInstance: Raycast | null = null;
 
+/**
+ * Creates a singleton instance of the Raycast system
+ * @param {Object} dependencies - Required dependencies
+ * @param {Camera} dependencies.camera - Three.js camera instance
+ * @returns {Raycast} Singleton Raycast instance
+ */
 const createRaycast = (dependencies: { camera: Camera }): Raycast => {
   if (!raycastInstance) {
     raycastInstance = new Raycast(dependencies.camera);
@@ -258,7 +300,10 @@ const createRaycast = (dependencies: { camera: Camera }): Raycast => {
   return raycastInstance;
 };
 
-// Export le proxy qui vérifie l'initialisation
+/**
+ * Creates a proxy for the Raycast class to ensure it's properly initialized before accessing its properties
+ * @type {Raycast}
+ */
 const raycast = new Proxy({} as Raycast, {
   get: (_, prop) => {
     if (!raycastInstance) {

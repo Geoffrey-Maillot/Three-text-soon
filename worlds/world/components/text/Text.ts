@@ -6,6 +6,7 @@ import { animationManager } from '../../../../src/class/AnimationManager';
 import { loop, Updatable } from '../../system/Loop';
 import dynapuff from '../../../../src/assets/fonts/DynaPuff SemiCondensed Medium_Regular.json';
 import { FontData } from 'three/examples/jsm/loaders/FontLoader.js';
+import { ANIMATE_SOON_TEXT } from '../../../../src/constants/animations';
 
 const mainText = `Hi, my name is\nMaillot Geoffrey\nI'm a Three.js developer !`;
 const soonText = `(soon...)`;
@@ -67,7 +68,7 @@ class Text extends Group {
   private createAnimateSoonText() {
     if (!this.soonText) return;
 
-    const timeline = animationManager.createAnimation('animateSoonText');
+    const timeline = animationManager.createAnimation(ANIMATE_SOON_TEXT);
     timeline
       .to(this.soonText?.material, {
         opacity: 1,

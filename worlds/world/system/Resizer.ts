@@ -1,13 +1,25 @@
 import { PerspectiveCamera, WebGLRenderer } from 'three';
 import { ClassNotInitializedError } from '../../../src/class/ClassNotInitializedError';
 
+/**
+ * Dependencies required for the Resizer class initialization
+ * @interface ResizerDependencies
+ */
 interface ResizerDependencies {
+  /** The container element that wraps the canvas */
   container: HTMLDivElement;
+  /** The Three.js WebGL renderer instance */
   renderer: WebGLRenderer;
+  /** The Three.js perspective camera instance */
   camera: PerspectiveCamera;
+  /** Whether the resizer should automatically handle window resize events */
   autoResize?: boolean;
 }
 
+/**
+ * Handles the resizing of the WebGL renderer and camera aspect ratio
+ * Implements a singleton pattern to ensure only one instance exists
+ */
 class Resizer {
   private renderer: WebGLRenderer;
   private camera: PerspectiveCamera;
@@ -41,13 +53,21 @@ class Resizer {
       .addEventListener('change', () => this.updatePixelRatio());
   }
 
-  // Met à jour le pixel ratio du renderer
+  /**
+   * Updates the pixel ratio of the renderer
+   * Limits the pixel ratio to a maximum of 2 for performance
+   * @private
+   */
   private updatePixelRatio() {
     const pixelRatio = Math.min(window.devicePixelRatio, 2);
     this.renderer.setPixelRatio(pixelRatio);
   }
 
-  // Vérifie si un redimensionnement est nécessaire
+  /**
+   * Checks if the renderer needs to be resized based on container dimensions
+   * @private
+   * @returns {boolean} Whether a resize is needed
+   */
   private needsResize() {
     const pixelRatio = Math.min(window.devicePixelRatio, 2);
     const width = (this.container.clientWidth * pixelRatio) | 0;
@@ -58,7 +78,10 @@ class Resizer {
     );
   }
 
-  // Ajuste la taille du renderer et de la caméra
+  /**
+   * Adjusts the size of the renderer and updates the camera aspect ratio
+   * Only resizes if necessary to avoid unnecessary calculations
+   */
   setSize() {
     if (!this.needsResize()) return;
 
@@ -78,7 +101,11 @@ class Resizer {
 // Singleton
 let resizerInstance: Resizer;
 
-// Create singleton resizer with dependencies
+/**
+ * Creates a singleton instance of the Resizer
+ * @param {ResizerDependencies} dependencies - The required dependencies
+ * @returns {Resizer} The singleton Resizer instance
+ */
 const createResizer = (dependencies: ResizerDependencies) => {
   if (!resizerInstance) {
     resizerInstance = new Resizer(dependencies);
@@ -86,7 +113,10 @@ const createResizer = (dependencies: ResizerDependencies) => {
   return resizerInstance;
 };
 
-// Export le proxy qui vérifie l'initialisation
+/**
+ * Creates a proxy for the Resizer class to ensure it's properly initialized before accessing its properties
+ * @type {Resizer}
+ */
 const resizer = new Proxy({} as Resizer, {
   get: (_, prop) => {
     if (!resizerInstance) {

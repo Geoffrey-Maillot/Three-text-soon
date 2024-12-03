@@ -1,6 +1,7 @@
 import { Color, Scene } from 'three';
 import { pane } from '../system/Tweakpane';
 import { animationManager } from '../../../src/class/AnimationManager';
+import { ANIMATE_TRANSITION_BACKGROUND_COLOR } from '../../../src/constants/animations';
 
 const folder = pane.addFolder('Scene');
 
@@ -12,7 +13,9 @@ const backgroundColors: Record<string, string> = {
   bleuFonce: '#1B263B',
 };
 
-const timeline = animationManager.createAnimation('transitionBackgroundColor');
+const timeline = animationManager.createAnimation(
+  ANIMATE_TRANSITION_BACKGROUND_COLOR
+);
 
 function transitionBackgroundColor(color: string, duration: number = 1) {
   const hexColor = backgroundColors[color];

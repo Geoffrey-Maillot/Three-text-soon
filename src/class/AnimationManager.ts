@@ -116,13 +116,30 @@ class AnimationManager {
     );
   }
 
+  /**
+   * Registers a callback to be executed when a specific animation is created
+   * Useful for handling animation dependencies and sequencing
+   *
+   * @param {string} name - Name of the animation to watch for
+   * @param {Function} callback - Function to execute when the animation is created
+   *                             Receives the animation timeline as parameter
+   *
+   * @example
+   * animationManager.onAnimationCreated('introAnim', (timeline) => {
+   *   timeline.eventCallback('onComplete', () => {
+   *     // Do something after the intro animation completes
+   *   });
+   * });
+   */
   onAnimationCreated(
     name: string,
     callback: (animation: gsap.core.Timeline) => void
   ) {
+    // If animation already exists, execute callback immediately
     if (this.animations.has(name)) {
       callback(this.animations.get(name)!);
     } else {
+      // Otherwise, store callback to be executed when animation is created
       if (!this.listeners.has(name)) {
         this.listeners.set(name, []);
       }

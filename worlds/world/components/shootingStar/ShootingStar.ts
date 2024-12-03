@@ -1,8 +1,9 @@
 import { Group, Points } from 'three';
-import { gsap } from 'gsap';
 import { createStarGeometry } from './createStarGeometry';
 import { createStarMaterial } from './createStarMaterial';
 import { pane } from '../../system/Tweakpane';
+import { animationManager } from '../../../../src/class/AnimationManager';
+import { ANIMATE_SHOOTING_STAR } from '../../../../src/constants/animations';
 
 const starMaterialFolder = pane.addFolder('Stars');
 
@@ -48,8 +49,12 @@ class ShootingStar extends Group {
         const star = new Points(starGeometry, starMaterial);
         this.add(star);
 
+        // Create animation for each star
+        const timeline = animationManager.createAnimation(
+          ANIMATE_SHOOTING_STAR + '-' + i
+        );
         // Animate the shooting star
-        gsap.to(star.position, {
+        timeline.to(star.position, {
           x: star.position.x + (Math.random() * 10 - 5),
           y: star.position.y - 5,
           z: star.position.z + (Math.random() * 10 - 5),

@@ -1,5 +1,9 @@
 import { LoadingManager } from 'three';
 
+/**
+ * Creates a singleton instance of the LoadingManager
+ * @returns {LoadingManager} The singleton LoadingManager instance
+ */
 const loadingManager = new LoadingManager();
 
 loadingManager.onLoad = () => console.log('loading done');

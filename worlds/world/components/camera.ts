@@ -3,6 +3,10 @@ import { pane } from '../system/Tweakpane';
 import { animationManager } from '../../../src/class/AnimationManager';
 import { raycast } from '../system/Raycaster';
 import { loop } from '../system/Loop';
+import {
+  ANIMATE_CAMERA,
+  ANIMATE_SOON_TEXT,
+} from '../../../src/constants/animations';
 
 /**
  * Camera settings configuration
@@ -23,7 +27,7 @@ const params = {
   targetX: 0,
   targetY: 0,
   smoothness: 0.1, // Lerp factor for smooth camera movement
-  distance: 12, // Maximum distance for mouse movement effect
+  distance: 10, // Maximum distance for mouse movement effect
   mouseAnimation: true,
 };
 const target = new Vector3();
@@ -119,7 +123,7 @@ const createCamera = () => {
   };
 
   // Initialize camera animation timeline
-  const timeline = animationManager.createAnimation('cameraAnimation');
+  const timeline = animationManager.createAnimation(ANIMATE_CAMERA);
 
   // Setup initial camera animation sequence
   timeline
@@ -135,8 +139,9 @@ const createCamera = () => {
       ease: 'power2.out',
     });
 
-  // Start mouse tracking after text animation completes
-  animationManager.onAnimationCreated('animateSoonText', (textAnimation) => {
+  // Wait for the "SOON" text animation to be created and complete before starting mouse tracking
+  // This ensures proper sequencing of animations and prevents mouse tracking from starting too early
+  animationManager.onAnimationCreated(ANIMATE_SOON_TEXT, (textAnimation) => {
     textAnimation.eventCallback('onComplete', () => {
       loop.add(animeTrackMouse);
     });
